@@ -88,29 +88,29 @@ def get_movie():
     best_sum=0
     for current_movie in range(0,len(streams)):
         year_movie=list(streams[current_movie].values())[2]
-        print(year_movie)
-        print(list(streams[current_movie].values())[0])
         current_sum=year_weighted[int(year_movie)]
             
         dir=list(streams[current_movie].values())[3]
         for current_dir in range(len(dir)):
             if dir[current_dir] in total_directors.values():
                 current_sum+=total_directors[dir[current_dir]]
-                    
+           
         act=list(streams[current_movie].values())[4]
         for current_act in range(len(act)):
             if act[current_act] in total_actors.values():
                 current_sum+=total_actors[dir[current_act]]
-                    
+              
         gen=list(streams[current_movie].values())[5]
         for current_gen in range(len(gen)):
             if gen[current_gen] in total_genres.values():
                 current_sum+=total_genres[dir[current_gen]]
-            #if current_sum>best_sum:
-                #best_sum=current_sum    
+        if current_sum>best_sum:
+            best_sum=current_sum
+            print(list(streams[current_movie].values())[0])
+    if best_sum<=0:
+        choice = random.choice(streams)
+        
 
-    
-    
 @app.route('/time')
 def get_current_time():
     return {'time': time.time()}
@@ -170,19 +170,21 @@ def dislike():
     return None
 
 load_streams()
-#choice = random.choice(streams)
-choice=streams[3]
+choice = random.choice(streams)
+#choice=streams[3]
 streams.remove(choice)
 choices.append(choice)
 dislike()
+like()
 dislike()
-#get_recommendation()
+dislike()
+like()
+like()
+like()
+like()
+like()
+like()
+dislike()
+get_recommendation()
+print('hey')
 get_movie()
-#print(year_weighted[2015])
-#print(year_weighted)
-#print(year_weighted[list(streams[10].values())[2]])
-#print(list(streams[5].values())[0])
-#print(list(streams[5].values())[2])
-#print(list(streams[2766].values())[2])
-#print(list(year_weighted)[0])
-#print(list(list(streams[3].values())[3])[0])
