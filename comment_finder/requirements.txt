@@ -1,0 +1,6 @@
+torch
+sentence_transformers
+scipy
+numpy
+pandas
+faiss
