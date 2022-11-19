@@ -5,6 +5,8 @@ import argparse
 import threading
 import queue
 
+api_key = ""
+
 def pull_data(item):
     title, year = item[0], int(item[1])
     url = f'http://www.omdbapi.com/'
@@ -36,6 +38,7 @@ if __name__ == "__main__":
     parser.add_argument("--thread_num", default=20, help="number of threads to work")
     args = parser.parse_args()
 
+    api_key     = args.api_key
     input_csv   = pd.read_csv(args.input_file)
     titles      = input_csv.movie_title.values
     years       = input_csv.movie_release_year.values
@@ -44,7 +47,7 @@ if __name__ == "__main__":
     q = queue.Queue()
     for k in title_year:
         q.put(k)
-        
+
     end_q = queue.Queue()
 
     threads = []
