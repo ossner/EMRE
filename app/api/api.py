@@ -77,12 +77,14 @@ def get_recommendation():
             total_directors[directors[i]]=exp_vald[i]*point_director
     #genres
     genres=list(freq_map['genres'].keys())
+    print(genres)
     point_genres=list(freq_map['genres'].values())[0]
+    print(point_genres)
     for i in range(0,len(genres)):
         if genres[i] in total_genres:
-            total_genres[genres[i]]+=point_genres
+            total_genres[genres[i]]+=point_genres*100
         if genres[i] not in total_genres:
-            total_genres[genres[i]]=point_genres    
+            total_genres[genres[i]]=point_genres*100   
             
             
                   
@@ -93,7 +95,7 @@ def get_movie():
     choice = random.choice(streams)
     for current_movie in range(0,len(streams)):
         year_movie=streams[current_movie]['year']
-        current_sum=year_weighted[int(year_movie)]
+        current_sum=0
         dir=streams[current_movie]['directors']
         for current_dir in range(len(dir)):
             if dir[current_dir] in total_directors.values():
@@ -146,8 +148,8 @@ def like():
             freq_map['genres'][genres] = 1
 
     get_recommendation()
-    movie = get_movie()
-    print(movie)
+    movie =get_movie() 
+    choices.append(movie)
     return movie
 
 @app.route('/dislike')
@@ -175,10 +177,13 @@ def dislike():
         except KeyError:
             freq_map['genres'][genres] = -1
     get_recommendation()
-    return get_movie()
+    movie =get_movie() 
+    choices.append(movie)
+    return movie
 
 @app.route('/init')
 def init():
+    choices = []
     return random_choice()
 
 def random_choice():
