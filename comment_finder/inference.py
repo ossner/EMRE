@@ -14,7 +14,6 @@ embeds = np.load('all_end.npy')
 def search_movie(text, indexer, df, sug_count=5):
     with torch.no_grad():
         s1 = model.encode(text)
-    print(s1.shape)
     out = indexer.search(s1[np.newaxis,:], 100)
     out_index = out[1][0]
     
@@ -22,10 +21,10 @@ def search_movie(text, indexer, df, sug_count=5):
     for idx in out_index:
         movie_embed = embeds[idx]
         cos_distance = distance.cosine(s1, movie_embed)
-        l2_distance = np.linalg.norm(s1 - movie_embed)
-        cos_list.append([idx, l2_distance])
+        #l2_distance = np.linalg.norm(s1 - movie_embed)
+        cos_list.append([idx, cos_distance])
         
-    cos_list = sorted(cos_list, key=lambda x: x[1])[:sug_count]
+    cos_list = sorted(cos_list, key=lambda x: x[1], reverse=True)[:sug_count]
     idx_ordered = [i for i, _ in cos_list]
     cos_ordered = [j for _, j in cos_list]
     
