@@ -5,62 +5,32 @@ con = sqlite3.connect("data/BurdaData.db")
 cur = con.cursor()
 values = [
     'id',
-    'available',
-    'imdb_id',
     'title',
     'otitle',
-    'original',
-    'serie',
-    'season',
-    'year',
-    'directors',
-    'actors',
-    'companies',
-    'countries',
-    'genres',
-    'channel',
-    'banners',
-    'posters',
-    'pid',
-    'provider',
-    'url',
-    'seasonurl',
-    'episodeurl',
-    'type',
-    'language'
+    'serie', 
+    'year', 
+    'directors', 
+    'actors', 
+    'genres', 
+    'posters', 
     ]
-cur.execute("""CREATE TABLE IF NOT EXISTS data(
+cur.execute("""CREATE TABLE IF NOT EXISTS streams(
     id int NOT NULL,
-    available,
-    imdb_id, 
-    title, 
-    otitle, 
-    original, 
-    serie, 
-    season, 
-    year, 
-    directors, 
-    actors, 
-    companies, 
-    countries, 
-    genres, 
-    channel, 
-    banners, 
-    posters, 
-    pid, 
-    provider, 
-    url, 
-    seasonurl, 
-    episodeurl, 
-    type, 
-    language,
+    title UNIQUE, 
+    otitle NOT NULL,
+    serie NOT NULL, 
+    year NOT NULL, 
+    directors NOT NULL, 
+    actors NOT NULL, 
+    genres NOT NULL, 
+    posters NOT NULL, 
     PRIMARY KEY (id))""")
 
-with open('data/nf.json') as f:
+with open('data/dp.json') as f:
     d = json.load(f)
     for entry in d:
         print(entry)
-        s = "INSERT INTO data VALUES("
+        s = "INSERT INTO streams VALUES("
         for value in values[:-1]:
             v = entry[value]
             if v:
@@ -75,7 +45,18 @@ with open('data/nf.json') as f:
                 s += "null, "
         print(f"{s}\"{entry[values[-1]]}\")")
         try:
-            cur.execute(f"{s}\"{entry[values[-1]]}\")")
+            v = entry[values[-1]]
+            if v:
+                v = v.replace('\"', '')
+                try:
+                    int(v)
+                    s += f"{v}"
+                except ValueError:
+                    s += f"\"{v}\""
+
+            else:
+                s += "null"
+            cur.execute(f"{s})")
             con.commit()
         except sqlite3.IntegrityError:
             pass
