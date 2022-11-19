@@ -82,9 +82,12 @@ def get_recommendation():
         if genres[i] in total_genres:
             total_genres[genres[i]]+=point_genres
         if genres[i] not in total_genres:
-            total_genres[genres[i]]=point_genres          
+            total_genres[genres[i]]=point_genres    
+            
+            
+                  
 def get_movie():
-#finding the best movie
+    #finding the best movie
     best_sum=0
     for current_movie in range(0,len(streams)):
         year_movie=list(streams[current_movie].values())[2]
@@ -106,9 +109,11 @@ def get_movie():
                 current_sum+=total_genres[dir[current_gen]]
         if current_sum>best_sum:
             best_sum=current_sum
-            print(list(streams[current_movie].values())[0])
     if best_sum<=0:
         choice = random.choice(streams)
+        return choice
+    return list(streams[current_movie].values())
+
         
 
 @app.route('/time')
@@ -168,23 +173,36 @@ def dislike():
         except KeyError:
             freq_map['genres'][genres] = -1
     return None
-
+def random_choice():
+    choice = random.choice(streams)
+    streams.remove(choice)
+    choices.append(choice)
+    return choice
 load_streams()
-choice = random.choice(streams)
-#choice=streams[3]
-streams.remove(choice)
-choices.append(choice)
+#choice = random.choice(streams)
+#streams.remove(choice)
+#choices.append(choice)
+random_choice()
 dislike()
+random_choice()
 like()
+random_choice()
 dislike()
+random_choice()
 dislike()
+random_choice()
 like()
+random_choice()
 like()
+random_choice()
 like()
+random_choice()
 like()
+random_choice()
 like()
+random_choice()
 like()
+random_choice()
 dislike()
 get_recommendation()
-print('hey')
-get_movie()
+print(get_movie())
