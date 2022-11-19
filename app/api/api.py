@@ -38,7 +38,7 @@ def load_streams():
         title = title.fetchone()
         streams.append({
             "title": title[0],
-            "serie": (True if title[1] == 0 else False),
+            "serie": (False if title[1] == 0 else True),
             "year": title[2],
             "directors": title[3].split(", "),
             "actors": title[4].split(", "),
@@ -88,31 +88,31 @@ def get_recommendation():
                   
 def get_movie():
     #finding the best movie
+    global streams
     best_sum=0
+    choice = random.choice(streams)
     for current_movie in range(0,len(streams)):
-        year_movie=list(streams[current_movie].values())[2]
+        year_movie=streams[current_movie]['year']
         current_sum=year_weighted[int(year_movie)]
-            
-        dir=list(streams[current_movie].values())[3]
+        dir=streams[current_movie]['directors']
         for current_dir in range(len(dir)):
             if dir[current_dir] in total_directors.values():
                 current_sum+=total_directors[dir[current_dir]]
            
-        act=list(streams[current_movie].values())[4]
+        act=streams[current_movie]['actors']
         for current_act in range(len(act)):
             if act[current_act] in total_actors.values():
                 current_sum+=total_actors[dir[current_act]]
               
-        gen=list(streams[current_movie].values())[5]
+        gen=streams[current_movie]['genres']
         for current_gen in range(len(gen)):
             if gen[current_gen] in total_genres.values():
                 current_sum+=total_genres[dir[current_gen]]
         if current_sum>best_sum:
             best_sum=current_sum
-    if best_sum<=0:
-        choice = random.choice(streams)
-        return choice
-    return list(streams[current_movie].values())
+            choice=streams[current_movie]
+    streams.remove(choice)
+    return choice
 
         
 
@@ -125,7 +125,6 @@ def like():
     """
     User liked the recommendation, update weights accordingly, find max weighted movie in the same loop, return it as the recommendation
     """
-    print(freq_map)
     for director in choices[-1]['directors']:
         try:
             freq_map['directors'][director] += 1
@@ -146,7 +145,10 @@ def like():
         except KeyError:
             freq_map['genres'][genres] = 1
 
-    return freq_map
+    get_recommendation()
+    movie = get_movie()
+    print(movie)
+    return movie
 
 @app.route('/dislike')
 def dislike():
@@ -172,37 +174,17 @@ def dislike():
             freq_map['genres'][genres] -= 1
         except KeyError:
             freq_map['genres'][genres] = -1
-    return None
+    get_recommendation()
+    return get_movie()
+
+@app.route('/init')
+def init():
+    return random_choice()
+
 def random_choice():
     choice = random.choice(streams)
     streams.remove(choice)
     choices.append(choice)
     return choice
+    
 load_streams()
-#choice = random.choice(streams)
-#streams.remove(choice)
-#choices.append(choice)
-random_choice()
-dislike()
-random_choice()
-like()
-random_choice()
-dislike()
-random_choice()
-dislike()
-random_choice()
-like()
-random_choice()
-like()
-random_choice()
-like()
-random_choice()
-like()
-random_choice()
-like()
-random_choice()
-like()
-random_choice()
-dislike()
-get_recommendation()
-print(get_movie())
