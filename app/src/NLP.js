@@ -2,13 +2,26 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useRef } from 'react';
+
 
 export default function NLP() {
   const [value, setValue] = React.useState("Controlled");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  
+  const handleClick = event => {
+    var text = value;
+    fetch("/semantic", {
+      method: 'POST',
+      headers: {
+        "content_type": "application/json"
+      },
+      body: JSON.stringify( { "sentence": text } )})
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
+
 
   return (
     <Box
@@ -20,15 +33,15 @@ export default function NLP() {
       autoComplete="off"
     >
       <TextField
-        id="fullWidth"
-        label="Text prompt"
-        placeholder="A rabbit in the pursuit of happiness..."
-        size="large"
-        multiline
-      />
+        label="Email (Controlled)"
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }} />
       <div>
       <Button
           variant="outlined"
+          onClick={handleClick}
         >Submit</Button>
       </div>
     </Box>

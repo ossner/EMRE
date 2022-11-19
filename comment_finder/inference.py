@@ -5,10 +5,10 @@ import scipy.spatial.distance as distance
 import pandas as pd
 import numpy as np
 
-indexer = faiss.read_index('hnsw.index')
+indexer = faiss.read_index('../../comment_finder/hnsw.index')
 model = SentenceTransformer("sentence-transformers/distiluse-base-multilingual-cased-v2")
-df = pd.read_csv('all_end.csv')
-embeds = np.load('all_end.npy')
+df = pd.read_csv('../../comment_finder/all_end2.csv')
+embeds = np.load('../../comment_finder/all_end2.npy')
 
 
 def search_movie(text, indexer, df, sug_count=5):

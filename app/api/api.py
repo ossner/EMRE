@@ -4,8 +4,9 @@ import sqlite3
 import json
 import random
 import sys
-sys.path.append("/Users/sebastianoner/git/stream_finder/comment_finder")
+sys.path.append("../../comment_finder")
 import inference
+from flask import request
 
 app = Flask(__name__)
 
@@ -56,9 +57,11 @@ def get_recommendation():
     print(freq_map['genres'])
     return best_movie
 
-@app.route('/semantic')
+@app.route('/semantic', methods = ['POST'])
 def semantic():
-    print(inference.api_answer("A war movie about a sad man"))
+    print(request.json)
+    sentence = request.json['sentence']
+    return inference.api_answer(sentence)
 
 @app.route('/like')
 def like():
@@ -130,4 +133,3 @@ def random_choice():
     return choice
     
 load_streams()
-semantic()
