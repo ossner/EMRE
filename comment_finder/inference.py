@@ -24,27 +24,27 @@ def search_movie(text, indexer, df, sug_count=5):
         #l2_distance = np.linalg.norm(s1 - movie_embed)
         cos_list.append([idx, cos_distance])
         
-    cos_list = sorted(cos_list, key=lambda x: x[1], reverse=True)[:sug_count]
+    cos_list = sorted(cos_list, key=lambda x: x[1], reverse=True)
     idx_ordered = [i for i, _ in cos_list]
     cos_ordered = [j for _, j in cos_list]
     
     return df.iloc[idx_ordered], cos_ordered
 
 
-def api_answer(sentence):
+def api_answer(sentence, sug_count=5):
     out_df, cos = search_movie(sentence, indexer, df)
     item_array = []
     for idx, cos_dist in enumerate(cos):
+        if len(item_array) >= sug_count:
+            break
         item = out_df.iloc[idx]
-        print(f"{item.Title} - {item.Year}")
-        print(f"{item.Poster}")
-        print(f"{item.Plot}")
-        print(cos_dist)
         item_dict = {
             "plot" : item.Plot,
             "poster": item.Poster,
             "title": item.Title,
             "year" : item.Year
         }
+        if len(item.Plot) < 200:
+            continue
         item_array.append(item_dict)
     return item_array

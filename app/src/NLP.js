@@ -3,9 +3,11 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useRef } from 'react';
+import "./NLP.css";
 
-
+var rec = []
 export default function NLP() {
+
   const [value, setValue] = React.useState("Controlled");
   
   const handleClick = event => {
@@ -18,12 +20,14 @@ export default function NLP() {
       body: JSON.stringify( { "sentence": text } )})
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        rec = data;
+        setValue(value + ' ');
       });
   };
 
 
   return (
+    <div>
     <Box
       component="form"
       sx={{
@@ -33,6 +37,7 @@ export default function NLP() {
       autoComplete="off"
     >
       <TextField
+        className='superInput'
         label="Email (Controlled)"
         value={value}
         onChange={(e) => {
@@ -45,5 +50,24 @@ export default function NLP() {
         >Submit</Button>
       </div>
     </Box>
+    <div>
+      <div>
+        <ul>
+            {rec.map(d => (        
+            <li key={d.title} className="a_big_box">
+              <div>
+                  <div className="left_image"><img src={d.poster} width="400px" height="auto"></img></div>
+                  <div className="right_info"><h2>{d.title} ({d.year})</h2></div>
+                  <div className="prompts">{d.plot}</div>
+              </div>
+            </li>
+            ))
+            } 
+
+        </ul>
+      </div>
+    </div>
+    </div>
+    
   );
 }

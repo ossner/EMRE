@@ -1,0 +1,28 @@
+.left_image {
+    float:left;
+}
+
+.right_info {
+    color:white;
+    padding: 20px;
+}
+
+.prompts {
+    color: white;
+    width: 700px;
+    float: left;
+    padding-top: 20px;
+}
+
+li.a_big_box {
+    height: 730px;
+    width: 1200px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.superInput {
+    color: white !important;
+}

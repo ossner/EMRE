@@ -59,7 +59,6 @@ def get_recommendation():
 
 @app.route('/semantic', methods = ['POST'])
 def semantic():
-    print(request.json)
     sentence = request.json['sentence']
     return inference.api_answer(sentence)
 
