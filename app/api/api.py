@@ -51,6 +51,21 @@ def get_recommendation():
                 current_val += freq_map['genres'][genre]
             except KeyError:
                 pass
+        for actor in title['actors']:
+            try:
+                current_val += freq_map['actors'][actor]*0.5
+            except KeyError:
+                pass
+        for director in title['directors']:
+            try:
+                current_val += freq_map['director'][director]*0.3
+            except KeyError:
+                pass
+        for year in range(0,title['year']):
+            try:
+                current_val += freq_map['years'][year+2]*0.3+freq_map['years'][year+1]*0.6+freq_map['years'][year]+freq_map['years'][year-1]*0.6+freq_map['years'][year-2]*0.3
+            except KeyError:
+                pass
         if current_val > max_val:
             best_movie = title
     streams.remove(best_movie)
