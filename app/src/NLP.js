@@ -8,7 +8,7 @@ import "./NLP.css";
 var rec = []
 export default function NLP() {
 
-  const [value, setValue] = React.useState("Controlled");
+  const [value, setValue] = React.useState("");
   
   const handleClick = event => {
     var text = value;
@@ -38,7 +38,7 @@ export default function NLP() {
     >
       <TextField
         className='superInput'
-        label="Email (Controlled)"
+        label="Text prompt..."
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
