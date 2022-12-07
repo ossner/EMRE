@@ -1,5 +1,5 @@
 # EMRE
-Excellent Movie Recommendation Epplication.
+Excellent Movie Recommendation Explorer.
 
 HackaTUM '22 Stream Finder Challenge
 
